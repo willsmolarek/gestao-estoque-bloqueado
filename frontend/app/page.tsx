@@ -139,7 +139,7 @@ export default function Home() {
                 type="submit"
                 className="bg-blue-600 hover:bg-blue-500 text-white font-medium py-2 px-6 rounded text-sm transition-colors"
               >
-                Cadastrar Bloqueio
+                Cadastrar Produto
               </button>
             </div>
           </form>
@@ -148,7 +148,7 @@ export default function Home() {
         {/* TABELA DE LISTAGEM */}
         <section className="bg-slate-800 rounded-lg border border-slate-700 overflow-hidden">
           <div className="p-4 border-b border-slate-700">
-            <h2 className="text-xl font-semibold text-slate-200">Itens em Regime de Bloqueio</h2>
+            <h2 className="text-xl font-semibold text-slate-200">Itens</h2>
           </div>
 
           {loading ? (
@@ -159,7 +159,7 @@ export default function Home() {
                 <thead className="bg-slate-900 text-slate-400 uppercase text-xs">
                   <tr>
                     <th className="p-3">ID</th>
-                    <th className="p-3">Código</th>
+                    <th className="p-3">PAT ou Código</th>
                     <th className="p-3">Produto</th>
                     <th className="p-3">Qtd</th>
                     <th className="p-3">Motivo</th>
@@ -199,10 +199,10 @@ export default function Home() {
                             Liberar
                           </button>
                           <button
-                            onClick={() => handleAtualizarStatus(item.id, 'Descartado')}
+                            onClick={() => handleAtualizarStatus(item.id, 'Sucateado')}
                             className="text-xs bg-amber-700 hover:bg-amber-600 text-white px-2 py-1 rounded"
                           >
-                            Descartar
+                            Sucatear
                           </button>
                           <button
                             onClick={() => handleDeletar(item.id)}
