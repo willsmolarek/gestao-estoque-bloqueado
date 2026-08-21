@@ -6,7 +6,6 @@ from typing import List
 from . import models, schemas
 from .database import engine, get_db
 
-# Cria as tabelas no banco se não existirem
 models.Base.metadata.create_all(bind=engine)
 
 app = FastAPI(
@@ -15,9 +14,6 @@ app = FastAPI(
     version="1.0.0"
 )
 
-# -------------------------------------------------------------------
-# CONFIGURAÇÃO DE CORS (Liberando acesso para o Frontend)
-# -------------------------------------------------------------------
 origins = [
     "http://localhost:3000",
     "http://127.0.0.1:3000",
@@ -31,16 +27,10 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-
-# Rota Inicial / Health Check
 @app.get("/")
 def home():
     return {"status": "online", "mensagem": "API de Gestão de Estoque Bloqueado está pronta!"}
 
-
-# -------------------------------------------------------------------
-# 1. CADASTRAR ITEM BLOQUEADO (POST)
-# -------------------------------------------------------------------
 @app.post("/itens/", response_model=schemas.ItemBloqueadoResponse, status_code=status.HTTP_201_CREATED)
 def criar_item_bloqueado(item: schemas.ItemBloqueadoCreate, db: Session = Depends(get_db)):
     novo_item = models.ItemBloqueado(**item.model_dump())
@@ -51,19 +41,11 @@ def criar_item_bloqueado(item: schemas.ItemBloqueadoCreate, db: Session = Depend
     
     return novo_item
 
-
-# -------------------------------------------------------------------
-# 2. LISTAR TODOS OS ITENS BLOQUEADOS (GET)
-# -------------------------------------------------------------------
 @app.get("/itens/", response_model=List[schemas.ItemBloqueadoResponse])
 def listar_itens_bloqueados(skip: int = 0, limit: int = 100, db: Session = Depends(get_db)):
     itens = db.query(models.ItemBloqueado).offset(skip).limit(limit).all()
     return itens
 
-
-# -------------------------------------------------------------------
-# 3. BUSCAR UM ITEM POR ID (GET)
-# -------------------------------------------------------------------
 @app.get("/itens/{item_id}", response_model=schemas.ItemBloqueadoResponse)
 def buscar_item_por_id(item_id: int, db: Session = Depends(get_db)):
     item = db.query(models.ItemBloqueado).filter(models.ItemBloqueado.id == item_id).first()
@@ -75,10 +57,6 @@ def buscar_item_por_id(item_id: int, db: Session = Depends(get_db)):
         )
     return item
 
-
-# -------------------------------------------------------------------
-# 4. ATUALIZAR STATUS DO ITEM (PATCH)
-# -------------------------------------------------------------------
 @app.patch("/itens/{item_id}/status", response_model=schemas.ItemBloqueadoResponse)
 def atualizar_status_item(
     item_id: int, 
@@ -99,10 +77,6 @@ def atualizar_status_item(
     
     return item
 
-
-# -------------------------------------------------------------------
-# 5. DELETAR ITEM (DELETE)
-# -------------------------------------------------------------------
 @app.delete("/itens/{item_id}", status_code=status.HTTP_204_NO_CONTENT)
 def deletar_item(item_id: int, db: Session = Depends(get_db)):
     item = db.query(models.ItemBloqueado).filter(models.ItemBloqueado.id == item_id).first()

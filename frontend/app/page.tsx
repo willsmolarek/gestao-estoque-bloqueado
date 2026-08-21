@@ -6,7 +6,6 @@ import { ItemBloqueado, ItemBloqueadoCreate } from '../types/item';
 
 export default function Home() {
   const [itens, setItens] = useState<ItemBloqueado[]>([]);
-  // 1. Já iniciamos o loading como true por padrão
   const [loading, setLoading] = useState(true);
 
   const [formData, setFormData] = useState<ItemBloqueadoCreate>({
@@ -16,7 +15,6 @@ export default function Home() {
     motivo_bloqueio: '',
   });
 
-  // 2. Removemos o setLoading(true) do início para evitar setState síncrono no effect
   const carregarItens = async () => {
     try {
       const response = await api.get<ItemBloqueado[]>('/itens/');

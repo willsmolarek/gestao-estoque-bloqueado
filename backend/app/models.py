@@ -9,6 +9,6 @@ class ItemBloqueado(Base):
     codigo_produto = Column(String, index=True, nullable=False)
     nome_produto = Column(String, nullable=False)
     quantidade = Column(Integer, nullable=False)
-    motivo_bloqueio = Column(String, nullable=False) # Ex: Avaria, Qualidade, Devolução
-    status = Column(String, default="Bloqueado")    # Ex: Bloqueado, Em Análise, Liberado, Descartado
+    motivo_bloqueio = Column(String, nullable=False)
+    status = Column(String, default="Bloqueado")    # Ex: Sucata, Remanejado e novo
     data_bloqueio = Column(DateTime, default=datetime.utcnow)
